@@ -209,7 +209,7 @@ Configure passwords present in .env file using generated passwords (see. https:/
 In this example we only want to read the dpkg.log file and add it to elastic search.
 Add dpkg.conf to `~/localhost/logstash/conf.d/`
 
-´´´
+```
 input {
   file {
          path => "/var/log/dpkg.log"
@@ -230,7 +230,8 @@ output {
     hosts => ["https://es.test2.thehip.app:9200"]
   }
 }
-´´´
+
+```
 
 Now you can can see in Kibana, go to Management → Kibana Index Patterns. Create a index pattern for `logstash-*` and you shoud be able to see all messages
 
