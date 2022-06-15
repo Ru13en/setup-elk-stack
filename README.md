@@ -71,8 +71,6 @@ Unzip both files using sudo otherwise elastic search will delete your certificat
 On docker-compose.yml you must add to services (elasticsearch, logstash and kibana):
 `restart: always`
 
-Add volume to logstash to receive config files `./logstash/conf.d/:/etc/logstash/conf.d/`.
-
 I've had some issues regarding the DNS of docker and TLS certs authentication in the elasticsearch. 
 
 To solve it could set an static ip address for each container in the stack:
