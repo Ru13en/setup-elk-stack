@@ -23,14 +23,12 @@ Setup docker must be updated with DNS resolution:
 
 `docker-compose build`
 
-Configure passwords present in .env file using generated passwords (see. https://github.com/deviantony/docker-elk#initial-setup)
-
 ## Regenerate certificates
 Use the following instructions base instructions:
 
 https://github.com/deviantony/docker-elk/blob/tls/tls/README.md
 
-At instances.yml, you must add to DNS records:
+At `instances.yml`, you must add to DNS records:
 
 es.test2.thehip.app
 kibana.test2.thehip.app
@@ -69,11 +67,13 @@ What filename should be used for the output zip file? tls/elasticsearch-ssl-http
 
 Unzip both files using sudo otherwise elastic search will delete your certificates due permission issues.
 
-## Setup to start stack on boot:
+## Setup to start stack on boot and comunication between containers:
 On docker-compose.yml you must add to services (elasticsearch, logstash and kibana):
 `restart: always`
 
-Also, I've had some issues regarding the DNS of docker and TLS certs authentication in the elasticsearch. 
+Add volume to logstash to receive config files `./logstash/conf.d/:/etc/logstash/conf.d/`.
+
+I've had some issues regarding the DNS of docker and TLS certs authentication in the elasticsearch. 
 
 To solve it could set an static ip address for each container in the stack:
 
@@ -137,6 +137,7 @@ services:
     volumes:
       - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro,Z
       - ./logstash/pipeline:/usr/share/logstash/pipeline:ro,Z
+      -  ./logstash/conf.d/:/etc/logstash/conf.d/:ro,Z
     ports:
       - "5044:5044"
       - "5000:5000/tcp"
@@ -182,7 +183,7 @@ volumes:
   elasticsearch:
 ```
 
-## Configure kibana yml
+## Configure logstash yml
 
 The Kibana default configuration is stored in `logstash/config/logstash.yml`
 
@@ -197,13 +198,44 @@ The Kibana default configuration is stored in `kibana/config/kibana.yml`
 Add the following lines:
 
 server.publicBaseUrl: "https://kibana.test2.thehip.app"
-elasticsearch.hosts: [ https://es.test2.thehip.app:9200" ]
+elasticsearch.hosts: [ "https://es.test2.thehip.app:9200" ]
 
+## Change default passwords
 
+Configure passwords present in .env file using generated passwords (see. https://github.com/deviantony/docker-elk#initial-setup)
 
+## Add logstash config file
+
+In this example we only want to read the dpkg.log file and add it to elastic search.
+Add dpkg.conf to `~/localhost/logstash/conf.d/`
+
+´´´
+input {
+  file {
+         path => "/var/log/dpkg.log"
+    start_position => "beginning"
+    sincedb_path => "/dev/null"
+  }
+  filter {
+  grok {
+    match => { "message" => "%{COMBINEDAPACHELOG}" }
+  }
+  date {
+    match => [ "timestamp" , "dd/MMM/yyyy:HH:mm:ss Z" ]
+  }
+}
+}
+output {
+  elasticsearch {
+    hosts => ["https://es.test2.thehip.app:9200"]
+  }
+}
+´´´
+
+Now you can can see in Kibana, go to Management → Kibana Index Patterns. Create a index pattern for `logstash-*` and you shoud be able to see all messages
 
 ## Statring elk-stack:
-To start docker stack on boot and detachted you must provide --restart always and -d options.
+To start docker stack on boot and detachted you must -d option.
 
-`docker-compose up -d`
+`sudo docker-compose up -d`
 
