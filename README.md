@@ -30,13 +30,13 @@ https://github.com/deviantony/docker-elk/blob/tls/tls/README.md
 
 At `instances.yml`, you must add to DNS records:
 
-es.test2.thehip.app
-kibana.test2.thehip.app
+- es.test2.thehip.app
+- kibana.test2.thehip.app
 
 and to ip records
 
-10.5.0.5
-85.217.160.59
+- 10.5.0.5
+- 85.217.160.59
 
 To generate the certificates, you must set the following steps:
 
