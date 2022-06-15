@@ -24,7 +24,7 @@ Setup docker must be updated with DNS resolution:
 `docker-compose build`
 
 ## Regenerate certificates
-Use the following instructions base instructions:
+Use the following base instructions:
 
 https://github.com/deviantony/docker-elk/blob/tls/tls/README.md
 
