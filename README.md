@@ -189,7 +189,7 @@ The Kibana default configuration is stored in `logstash/config/logstash.yml`
 
 Add the following lines:
 
-monitoring.elasticsearch.hosts: "https://es.test2.thehip.app:9200"
+- monitoring.elasticsearch.hosts: "https://es.test2.thehip.app:9200"
 
 ## Configure kibana yml
 
@@ -197,8 +197,8 @@ The Kibana default configuration is stored in `kibana/config/kibana.yml`
 
 Add the following lines:
 
-server.publicBaseUrl: "https://kibana.test2.thehip.app"
-elasticsearch.hosts: [ "https://es.test2.thehip.app:9200" ]
+- server.publicBaseUrl: "https://kibana.test2.thehip.app"
+- elasticsearch.hosts: [ "https://es.test2.thehip.app:9200" ]
 
 ## Change default passwords
 
