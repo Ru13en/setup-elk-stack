@@ -204,6 +204,11 @@ elasticsearch.hosts: [ "https://es.test2.thehip.app:9200" ]
 
 Configure passwords present in .env file using generated passwords (see. https://github.com/deviantony/docker-elk#initial-setup)
 
+## Statring elk-stack:
+To start docker stack on boot and detachted you must -d option.
+
+`sudo docker-compose up -d`
+
 ## Add logstash config file
 
 In this example we only want to read the dpkg.log file and add it to elastic search.
@@ -235,8 +240,4 @@ output {
 
 Now you can can see in Kibana, go to Management → Kibana Index Patterns. Create a index pattern for `logstash-*` and you shoud be able to see all messages
 
-## Statring elk-stack:
-To start docker stack on boot and detachted you must -d option.
-
-`sudo docker-compose up -d`
 
