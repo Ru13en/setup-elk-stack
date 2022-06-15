@@ -137,7 +137,6 @@ services:
     volumes:
       - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro,Z
       - ./logstash/pipeline:/usr/share/logstash/pipeline:ro,Z
-      -  ./logstash/conf.d/:/etc/logstash/conf.d/:ro,Z
     ports:
       - "5044:5044"
       - "5000:5000/tcp"
@@ -212,7 +211,7 @@ To start docker stack on boot and detachted you must -d option.
 ## Add logstash config file
 
 In this example we only want to read the dpkg.log file and add it to elastic search.
-Add dpkg.conf to `~/localhost/logstash/conf.d/`
+Add dpkg.conf to `./logstash/pipeline`
 
 ```
 input {
